@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import sideStyle from "./style.module.css";
 import { addLabelName } from "../store/actionCreators";
 import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
+  // 从redux的store对象中提取数据(state)。
+  const { addFileName, addFileCode, addFileData } = useSelector(
+    (state) => ({
+      addFileName: state.components.addFileName,
+      addFileCode: state.components.addFileCode,
+      addFileData: state.components.addFileData,
+    }),
+    shallowEqual
+  );
   const dispatch = useDispatch();
   // 增加表单是否可见
   const [visible, setVisible] = useState(false);
   // 增加表单的form
   const [form] = Form.useForm();
-  useEffect(() => {
-    localStorage.getItem("data");
-  }, []);
 
   // 显示表单
   const onVisible = () => {
@@ -44,7 +50,14 @@ export default function SlidingTabs() {
         添加
       </Button>
       <ul>
-        <li className={sideStyle.li}>1</li>
+        {addFileData.map((index, item) => {
+          console.log("index", index);
+          return (
+            <li className={sideStyle.li} key={item}>
+              {index.addFileName}
+            </li>
+          );
+        })}
       </ul>
       {/* 新增表单 */}
       <Modal

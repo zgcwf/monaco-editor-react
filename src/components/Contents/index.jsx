@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
@@ -22,8 +22,15 @@ export default function Contents() {
   );
   // console.log(addFileName, addFileCode);
 
-  console.log(JSON.parse(localStorage.getItem("data")) || []);
-
+  console.log("1", JSON.parse(localStorage.getItem("data")) || []);
+  const getItemData = () => {
+    dispatch(
+      getDataObjectAsync(JSON.parse(localStorage.getItem("data")) || [])
+    );
+  };
+  useEffect(() => {
+    getItemData();
+  }, []);
   // 点击保存
   const saveData = () => {
     // 对象要转化成字符串
@@ -32,14 +39,15 @@ export default function Contents() {
       addFileName: addFileName,
       addFileCode: addFileCode,
     };
-    console.log(data);
+    console.log("data", data);
     // if(data.addFileName){
     // 如果当前文件名存在，选中当前文件名，将变化的addFileCode加入其中
     // }如果当前文件名不存在，创建新文件
+    // 未完成：根据不同的文件名显示不同的内容
     // 问题1：怎样得到当前的文件名
-    const dataAll = [data, ...addFileData];
+    const dataAll = [...addFileData, data];
     localStorage.setItem("data", JSON.stringify(dataAll));
-    dispatch(getDataObjectAsync(dataAll));
+    getItemData();
   };
   return (
     <div>
