@@ -1,0 +1,30 @@
+.Contents{
+   position: relative;
+}
+.side{
+    width: 270px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(209, 205, 205);
+    overflow-y: auto;
+}
+.content{
+    width: 80%;
+    height: 700px;
+    margin-left: 300px;
+    padding: 50px  ;
+}
+.footer{
+    width: 400px;
+    height: 100px;
+    margin: 0px 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.button{
+    width: 100px;
+    height: 40px;
+}
