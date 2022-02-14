@@ -8,11 +8,12 @@ import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
   // 从redux的store对象中提取数据(state)。
-  const { addFileName, addFileCode, addFileData } = useSelector(
+  const { addFileName, addFileCode, addFileData, currentName } = useSelector(
     (state) => ({
       addFileName: state.components.addFileName,
       addFileCode: state.components.addFileCode,
       addFileData: state.components.addFileData,
+      currentName: state.components.currentName,
     }),
     shallowEqual
   );
@@ -73,6 +74,9 @@ export default function SlidingTabs() {
           console.log("index", index);
           return (
             <li
+              style={{
+                backgroundColor: item === currentName ? "#00b7fa" : "white",
+              }}
               className={sideStyle.li}
               key={index}
               onClick={(e) => {
