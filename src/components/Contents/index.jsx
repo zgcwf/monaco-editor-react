@@ -12,26 +12,14 @@ export default function Contents() {
   const dispatch = useDispatch();
 
   // 从redux的store对象中提取数据(state)。
-  const { addFileName, addFileCode, addFileData, currentName } = useSelector(
+  const { addFileCode, addFileData, currentName } = useSelector(
     (state) => ({
-      addFileName: state.components.addFileName,
       addFileCode: state.components.addFileCode,
       addFileData: state.components.addFileData,
       currentName: state.components.currentName,
     }),
     shallowEqual
   );
-
-  console.log("1", JSON.parse(localStorage.getItem("data")) || []);
-  const getItemData = () => {
-    dispatch(
-      getDataObjectAsync(JSON.parse(localStorage.getItem("data")) || [])
-    );
-  };
-
-  useEffect(() => {
-    getItemData();
-  }, [dispatch]);
 
   // 点击保存
   const saveData = () => {
@@ -50,9 +38,7 @@ export default function Contents() {
       };
       addFileData.push(data);
     }
-
-    localStorage.setItem("data", JSON.stringify(addFileData));
-    getItemData();
+    dispatch(getDataObjectAsync([...addFileData]));
   };
   return (
     <div>

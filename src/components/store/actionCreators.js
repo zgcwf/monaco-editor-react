@@ -7,6 +7,7 @@ const addLabelName = (res) => ({
 
 export const getFileNameAsync = (data) => {
   return (dispatch) => {
+    localStorage.setItem("fileName", JSON.stringify(data));
     dispatch(addLabelName(data));
   };
 };
@@ -23,6 +24,7 @@ export const getDataObject = (res) => ({
 });
 export const getDataObjectAsync = (data) => {
   return (dispatch) => {
+    localStorage.setItem("data", JSON.stringify(data));
     dispatch(getDataObject(data));
   };
 };

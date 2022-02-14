@@ -3,7 +3,11 @@ import { Button, Modal, Form } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import sideStyle from "./style.module.css";
-import { CurrentFileName, getFileNameAsync } from "../store/actionCreators";
+import {
+  CurrentFileName,
+  getFileNameAsync,
+  getDataObjectAsync,
+} from "../store/actionCreators";
 import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
@@ -22,17 +26,11 @@ export default function SlidingTabs() {
   const [mouse, setMouse] = useState(false);
   // 增加表单的form
   const [form] = Form.useForm();
-
-  const getFileName = () => {
+  useEffect(() => {
     dispatch(
       getFileNameAsync(JSON.parse(localStorage.getItem("fileName")) || [])
     );
-  };
-
-  useEffect(() => {
-    getFileName();
   }, [dispatch]);
-
   // 显示表单
   const onVisible = () => {
     setVisible(true);
@@ -52,8 +50,8 @@ export default function SlidingTabs() {
         return;
       }
       const FileNameList = [...addFileName, value.LabelName];
-      localStorage.setItem("fileName", JSON.stringify(FileNameList));
-      getFileName();
+
+      dispatch(getFileNameAsync(FileNameList));
 
       setVisible(false);
       // 表单重置
@@ -78,8 +76,12 @@ export default function SlidingTabs() {
       const filterFileData = addFileData.filter((items) => {
         return items.FileName !== item;
       });
+      const filterFileName = addFileName.filter((items) => {
+        return items !== item;
+      });
       console.log("filterFileData", filterFileData);
-      localStorage.setItem("data", JSON.stringify(filterFileData));
+      dispatch(getDataObjectAsync([...filterFileData]));
+      dispatch(getFileNameAsync([...filterFileName]));
     }
   };
   return (

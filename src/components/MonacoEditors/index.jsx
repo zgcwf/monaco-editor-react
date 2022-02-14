@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MonacoEditor from "react-monaco-editor";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
