@@ -8,10 +8,9 @@ import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
   // 从redux的store对象中提取数据(state)。
-  const { addFileName, addFileCode, addFileData, currentName } = useSelector(
+  const { addFileName, addFileData, currentName } = useSelector(
     (state) => ({
       addFileName: state.components.addFileName,
-      addFileCode: state.components.addFileCode,
       addFileData: state.components.addFileData,
       currentName: state.components.currentName,
     }),
@@ -20,6 +19,7 @@ export default function SlidingTabs() {
   const dispatch = useDispatch();
   // 增加表单是否可见
   const [visible, setVisible] = useState(false);
+  const [mouse, setMouse] = useState(false);
   // 增加表单的form
   const [form] = Form.useForm();
 
@@ -64,6 +64,24 @@ export default function SlidingTabs() {
   const setFileName = (res) => {
     dispatch(CurrentFileName(res));
   };
+  //鼠标移入、移出的回调,{高阶函数（柯里化），返回一个函数}
+  const handleMouse = (flag) => {
+    return () => {
+      setMouse(flag);
+    };
+  };
+  // 删除
+  const handleDelete = (item) => {
+    if (window.confirm("确定删除吗？")) {
+      console.log(item);
+      // filter过滤
+      const filterFileData = addFileData.filter((items) => {
+        return items.FileName !== item;
+      });
+      console.log("filterFileData", filterFileData);
+      localStorage.setItem("data", JSON.stringify(filterFileData));
+    }
+  };
   return (
     <div>
       <Button type="primary" onClick={onVisible} className={sideStyle.button}>
@@ -71,7 +89,6 @@ export default function SlidingTabs() {
       </Button>
       <ul>
         {addFileName.map((item, index) => {
-          console.log("index", index);
           return (
             <li
               style={{
@@ -82,8 +99,19 @@ export default function SlidingTabs() {
               onClick={(e) => {
                 setFileName(item);
               }}
+              onMouseEnter={handleMouse(true)}
+              onMouseLeave={handleMouse(false)}
             >
-              {item}
+              <span>{item}</span>
+              <button
+                className={sideStyle.btnDanger}
+                style={{ display: mouse ? "block" : "none" }}
+                onClick={() => {
+                  handleDelete(item);
+                }}
+              >
+                删除
+              </button>
             </li>
           );
         })}
