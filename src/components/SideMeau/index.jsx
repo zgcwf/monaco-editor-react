@@ -3,7 +3,7 @@ import { Button, Modal, Form } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import sideStyle from "./style.module.css";
-import { addLabelName } from "../store/actionCreators";
+import { CurrentFileName, getFileNameAsync } from "../store/actionCreators";
 import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
@@ -22,6 +22,16 @@ export default function SlidingTabs() {
   // 增加表单的form
   const [form] = Form.useForm();
 
+  const getFileName = () => {
+    dispatch(
+      getFileNameAsync(JSON.parse(localStorage.getItem("fileName")) || [])
+    );
+  };
+
+  useEffect(() => {
+    getFileName();
+  }, []);
+
   // 显示表单
   const onVisible = () => {
     setVisible(true);
@@ -36,13 +46,22 @@ export default function SlidingTabs() {
   const addFormOK = () => {
     // validateFields() 触发表单验证,得到了表单提交的数据value
     form.validateFields().then(async (value) => {
-      // 文件名
-      dispatch(addLabelName(value.LabelName));
-      //  关闭表单
+      if (addFileName.indexOf(value.LabelName) >= 0) {
+        window.alert("标签名重复了");
+        return;
+      }
+      const FileNameList = [...addFileName, value.LabelName];
+      localStorage.setItem("fileName", JSON.stringify(FileNameList));
+      getFileName();
+
       setVisible(false);
       // 表单重置
       form.resetFields();
     });
+  };
+  // 存储当前文件名
+  const setFileName = (res) => {
+    dispatch(CurrentFileName(res));
   };
   return (
     <div>
@@ -50,11 +69,17 @@ export default function SlidingTabs() {
         添加
       </Button>
       <ul>
-        {addFileData.map((index, item) => {
+        {addFileName.map((index, item) => {
           console.log("index", index);
           return (
-            <li className={sideStyle.li} key={item}>
-              {index.addFileName}
+            <li
+              className={sideStyle.li}
+              key={item}
+              onClick={(e) => {
+                setFileName(index);
+              }}
+            >
+              {index}
             </li>
           );
         })}
