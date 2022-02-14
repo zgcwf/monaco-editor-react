@@ -21,7 +21,6 @@ export default function Contents() {
     }),
     shallowEqual
   );
-  // console.log(addFileName, addFileCode);
 
   console.log("1", JSON.parse(localStorage.getItem("data")) || []);
   const getItemData = () => {
@@ -32,25 +31,28 @@ export default function Contents() {
 
   useEffect(() => {
     getItemData();
-  }, []);
+  }, [dispatch]);
 
   // 点击保存
   const saveData = () => {
     // 对象要转化成字符串
-    // addFileData.forEach((index, item) => {
-    //   if ((index.FileName = currentName)) {
-    //     index.FileCode = addFileCode;
-    //   }
-    // });
-    // const data = {
-    //   id: "001",
-    //   FileName: currentName,
-    //   FileCode: addFileCode,
-    // };
-    // console.log("data", data);
-    // const dataAll = [...addFileData, data];
-    // localStorage.setItem("data", JSON.stringify(dataAll));
-    // getItemData();
+    const file = addFileData.find((file) => file.FileName === currentName);
+    if (file) {
+      // update
+      file.FileName = currentName;
+      file.FileCode = addFileCode;
+    } else {
+      // add
+      const data = {
+        id: "001",
+        FileName: currentName,
+        FileCode: addFileCode,
+      };
+      addFileData.push(data);
+    }
+
+    localStorage.setItem("data", JSON.stringify(addFileData));
+    getItemData();
   };
   return (
     <div>

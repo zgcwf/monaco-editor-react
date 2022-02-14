@@ -30,7 +30,7 @@ export default function SlidingTabs() {
 
   useEffect(() => {
     getFileName();
-  }, []);
+  }, [dispatch]);
 
   // 显示表单
   const onVisible = () => {
@@ -69,17 +69,17 @@ export default function SlidingTabs() {
         添加
       </Button>
       <ul>
-        {addFileName.map((index, item) => {
+        {addFileName.map((item, index) => {
           console.log("index", index);
           return (
             <li
               className={sideStyle.li}
-              key={item}
+              key={index}
               onClick={(e) => {
-                setFileName(index);
+                setFileName(item);
               }}
             >
-              {index}
+              {item}
             </li>
           );
         })}
