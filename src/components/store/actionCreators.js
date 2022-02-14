@@ -5,7 +5,7 @@ const addLabelName = (res) => ({
   addFileName: res,
 });
 
-export const getFileNameAsync = (data) => {
+export const FileNameListAsync = (data) => {
   return (dispatch) => {
     localStorage.setItem("fileName", JSON.stringify(data));
     dispatch(addLabelName(data));
@@ -13,19 +13,19 @@ export const getFileNameAsync = (data) => {
 };
 
 // 新增代码
-export const addData = (res) => ({
-  type: actionTypes.FILEDATA,
+export const addFileCodeAsync = (res) => ({
+  type: actionTypes.FILECODE,
   addFileCode: res,
 });
 // 新增数据
-export const getDataObject = (res) => ({
+export const addDataObject = (res) => ({
   type: actionTypes.GETDATA,
   addFileData: res,
 });
-export const getDataObjectAsync = (data) => {
+export const changeDataObjectAsync = (data) => {
   return (dispatch) => {
     localStorage.setItem("data", JSON.stringify(data));
-    dispatch(getDataObject(data));
+    dispatch(addDataObject(data));
   };
 };
 // 获取当前文件名

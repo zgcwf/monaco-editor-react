@@ -2,7 +2,7 @@ import React from "react";
 import MonacoEditor from "react-monaco-editor";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
-import { addData } from "../store/actionCreators";
+import { addFileCodeAsync } from "../store/actionCreators";
 
 export default function MonacoEditors() {
   // 从redux的store对象中提取数据(state)。
@@ -21,7 +21,7 @@ export default function MonacoEditors() {
   };
   const onChange = (newValue, e) => {
     // console.log("onChange", newValue, e);
-    dispatch(addData(newValue));
+    dispatch(addFileCodeAsync(newValue));
   };
 
   const options = {

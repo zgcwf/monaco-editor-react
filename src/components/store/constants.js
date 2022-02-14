@@ -1,4 +1,4 @@
 export const FILENAME = "FILENAME";
-export const FILEDATA = "FILEDATA";
+export const FILECODE = "FILECODE";
 export const GETDATA = "GETDATA";
 export const SETFILENAME = "SETFILENAME";

@@ -5,8 +5,8 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import sideStyle from "./style.module.css";
 import {
   CurrentFileName,
-  getFileNameAsync,
-  getDataObjectAsync,
+  FileNameListAsync,
+  changeDataObjectAsync,
 } from "../store/actionCreators";
 import MyForm from "./MyForm";
 
@@ -28,7 +28,7 @@ export default function SlidingTabs() {
   const [form] = Form.useForm();
   useEffect(() => {
     dispatch(
-      getFileNameAsync(JSON.parse(localStorage.getItem("fileName")) || [])
+      FileNameListAsync(JSON.parse(localStorage.getItem("fileName")) || [])
     );
   }, [dispatch]);
   // 显示表单
@@ -51,7 +51,7 @@ export default function SlidingTabs() {
       }
       const FileNameList = [...addFileName, value.LabelName];
 
-      dispatch(getFileNameAsync(FileNameList));
+      dispatch(FileNameListAsync(FileNameList));
 
       setVisible(false);
       // 表单重置
@@ -80,8 +80,8 @@ export default function SlidingTabs() {
         return items !== item;
       });
       console.log("filterFileData", filterFileData);
-      dispatch(getDataObjectAsync([...filterFileData]));
-      dispatch(getFileNameAsync([...filterFileName]));
+      dispatch(changeDataObjectAsync([...filterFileData]));
+      dispatch(FileNameListAsync([...filterFileName]));
     }
   };
   return (

@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import contentStyle from "./style.module.css";
-import { getDataObjectAsync } from "../store/actionCreators";
+import { changeDataObjectAsync } from "../store/actionCreators";
 
 import MonacoEditors from "../MonacoEditors";
 import SlidingTabs from "../SideMeau";
@@ -38,7 +38,7 @@ export default function Contents() {
       };
       addFileData.push(data);
     }
-    dispatch(getDataObjectAsync([...addFileData]));
+    dispatch(changeDataObjectAsync([...addFileData]));
   };
   return (
     <div>
