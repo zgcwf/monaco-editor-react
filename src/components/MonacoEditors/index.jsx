@@ -1,27 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MonacoEditor from "react-monaco-editor";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { addFileCodeAsync } from "../store/actionCreators";
 
-export default function MonacoEditors() {
+export default function MonacoEditors({ code, setCode }) {
   // 从redux的store对象中提取数据(state)。
-  const { addFileCode } = useSelector(
-    (state) => ({
-      addFileCode: state.components.addFileCode,
-    }),
-    shallowEqual
-  );
-  const dispatch = useDispatch();
+  // const { addFileCode, addFileName, addFileData, currentName } = useSelector(
+  //   (state) => {
+  //     return {
+  //       addFileCode: state.components.addFileCode,
+  //       addFileName: state.components.addFileName,
+  //       addFileData: state.components.addFileData,
+  //       currentName: state.components.currentName,
+  //     };
+  //   },
+  //   shallowEqual
+  // );
+  // const dispatch = useDispatch();
 
-  const editorDidMount = (editor, monaco) => {
-    // console.log("editorDidMount", editor, editor.getValue(), editor.getModel());
-    // this.editor = editor;
-    // editor.focus();
-  };
+  // const [stateData, setStateData] = useState();
+
+  // const [code, setCode] = useState(
+  //   addFileData.length === 0 ? "" : addFileData[0].FileCode
+  // );
+
+  // useEffect(() => {
+  //   addFileData.forEach((item) => {
+  //     if (item.FileName === currentName) {
+  //       setStateData(item.FileCode);
+  //     }
+  //   });
+  // }, [currentName, addFileData]);
+
   const onChange = (newValue, e) => {
-    // console.log("onChange", newValue, e);
-    dispatch(addFileCodeAsync(newValue));
+    setCode(newValue);
+    // dispatch(addFileCodeAsync(newValue));
   };
 
   const options = {
@@ -37,11 +51,10 @@ export default function MonacoEditors() {
         width="100%"
         height="100%"
         language="javascript"
-        value={addFileCode}
+        value={code}
         options={options}
         theme="vs-dark"
         onChange={onChange}
-        editorDidMount={editorDidMount}
       />
     </>
   );

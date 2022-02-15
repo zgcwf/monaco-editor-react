@@ -26,11 +26,11 @@ export default function SlidingTabs() {
   const [mouse, setMouse] = useState(false);
   // 增加表单的form
   const [form] = Form.useForm();
-  useEffect(() => {
-    dispatch(
-      FileNameListAsync(JSON.parse(localStorage.getItem("fileName")) || [])
-    );
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(
+  //     FileNameListAsync(JSON.parse(localStorage.getItem("fileName")) || [])
+  //   );
+  // }, [dispatch]);
   // 显示表单
   const onVisible = () => {
     setVisible(true);
@@ -45,13 +45,13 @@ export default function SlidingTabs() {
   const addFormOK = () => {
     // validateFields() 触发表单验证,得到了表单提交的数据value
     form.validateFields().then(async (value) => {
-      if (addFileName.indexOf(value.LabelName) >= 0) {
-        window.alert("标签名重复了");
-        return;
-      }
-      const FileNameList = [...addFileName, value.LabelName];
+      // if (addFileName.indexOf(value.LabelName) >= 0) {
+      //   window.alert("标签名重复了");
+      //   return;
+      // }
+      // const FileNameList = [...addFileName, value.LabelName];
 
-      dispatch(FileNameListAsync(FileNameList));
+      dispatch(FileNameListAsync(value.LabelName));
 
       setVisible(false);
       // 表单重置
@@ -90,7 +90,7 @@ export default function SlidingTabs() {
         添加
       </Button>
       <ul>
-        {addFileName.map((item, index) => {
+        {addFileData.map((item, index) => {
           return (
             <li
               style={{
@@ -99,17 +99,17 @@ export default function SlidingTabs() {
               className={sideStyle.li}
               key={index}
               onClick={(e) => {
-                setFileName(item);
+                setFileName(item.FileName);
               }}
               onMouseEnter={handleMouse(true)}
               onMouseLeave={handleMouse(false)}
             >
-              <span>{item}</span>
+              <span>{item.FileName}</span>
               <button
                 className={sideStyle.btnDanger}
                 style={{ display: mouse ? "block" : "none" }}
                 onClick={() => {
-                  handleDelete(item);
+                  handleDelete(item.FileName);
                 }}
               >
                 删除

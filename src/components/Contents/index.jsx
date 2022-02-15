@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
@@ -21,24 +21,40 @@ export default function Contents() {
     shallowEqual
   );
 
-  // 点击保存
+  const [code, setCode] = useState(
+    addFileData.length === 0
+      ? ""
+      : addFileData.find((file) => file.FileName === currentName).FileCode
+  );
+
+  useEffect(() => {
+    setCode(
+      addFileData.length === 0
+        ? ""
+        : addFileData.find((file) => file.FileName === currentName).FileCode
+    );
+  }, [currentName]);
+
+  // 保存
   const saveData = () => {
     // 对象要转化成字符串
-    const file = addFileData.find((file) => file.FileName === currentName);
-    if (file) {
-      // update
-      file.FileName = currentName;
-      file.FileCode = addFileCode;
-    } else {
-      // add
-      const data = {
-        id: "001",
-        FileName: currentName,
-        FileCode: addFileCode,
-      };
-      addFileData.push(data);
-    }
-    dispatch(changeDataObjectAsync([...addFileData]));
+    // const file = addFileData.find((file) => file.FileName === currentName);
+    // if (file) {
+    //   // update
+    //   file.FileName = currentName;
+    //   file.FileCode = addFileCode;
+    // } else {
+    //   // add
+    //   const data = {
+    //     id: "001",
+    //     FileName: currentName,
+    //     FileCode: addFileCode,
+    //   };
+    //   addFileData.push(data);
+    // }
+    // dispatch(changeDataObjectAsync([...addFileData]));
+    console.log("save data-----");
+    dispatch(changeDataObjectAsync(code, currentName));
   };
   return (
     <div>
@@ -48,14 +64,14 @@ export default function Contents() {
         </div>
 
         <div className={contentStyle.content}>
-          <MonacoEditors />
+          <MonacoEditors code={code} setCode={setCode} />
         </div>
 
         <div className={contentStyle.footer}>
           <Button
             type="primary"
             className={contentStyle.button}
-            onClick={(e) => saveData()}
+            onClick={saveData}
           >
             Save
           </Button>
