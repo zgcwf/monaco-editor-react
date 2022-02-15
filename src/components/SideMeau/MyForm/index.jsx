@@ -14,8 +14,8 @@ const MyForm = forwardRef((props, ref) => {
       name="form_in_modal"
     >
       <Form.Item
-        label="LabelName"
-        name="LabelName"
+        label="labelName"
+        name="labelName"
         rules={[{ required: true }]}
       >
         <Input />

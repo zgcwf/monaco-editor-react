@@ -5,17 +5,16 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import sideStyle from "./style.module.css";
 import {
   CurrentFileName,
-  FileNameListAsync,
-  changeDataObjectAsync,
+  addFileListAsync,
+  delFileListAsync,
 } from "../store/actionCreators";
 import MyForm from "./MyForm";
 
 export default function SlidingTabs() {
   // 从redux的store对象中提取数据(state)。
-  const { addFileName, addFileData, currentName } = useSelector(
+  const { setFileData, currentName } = useSelector(
     (state) => ({
-      addFileName: state.components.addFileName,
-      addFileData: state.components.addFileData,
+      setFileData: state.components.setFileData,
       currentName: state.components.currentName,
     }),
     shallowEqual
@@ -41,13 +40,14 @@ export default function SlidingTabs() {
   const addFormOK = () => {
     // validateFields() 触发表单验证,得到了表单提交的数据value
     form.validateFields().then(async (value) => {
-      // if (addFileName.indexOf(value.LabelName) >= 0) {
-      //   window.alert("标签名重复了");
-      //   return;
-      // }
-      // const FileNameList = [...addFileName, value.LabelName];
-
-      dispatch(FileNameListAsync(value.LabelName));
+      const file = setFileData.find(
+        (item) => item.fileName === value.labelName
+      );
+      if (file) {
+        window.alert("文件名重复了");
+        return;
+      }
+      dispatch(addFileListAsync(value.labelName));
 
       setVisible(false);
       // 表单重置
@@ -65,19 +65,10 @@ export default function SlidingTabs() {
     };
   };
   // 删除
-  const handleDelete = (item) => {
+  const handleDelete = (name) => {
     if (window.confirm("确定删除吗？")) {
-      console.log(item);
-      // filter过滤
-      const filterFileData = addFileData.filter((items) => {
-        return items.FileName !== item;
-      });
-      const filterFileName = addFileName.filter((items) => {
-        return items !== item;
-      });
-      console.log("filterFileData", filterFileData);
-      dispatch(changeDataObjectAsync([...filterFileData]));
-      dispatch(FileNameListAsync([...filterFileName]));
+      console.log(name);
+      dispatch(delFileListAsync(name));
     }
   };
   return (
@@ -86,26 +77,27 @@ export default function SlidingTabs() {
         添加
       </Button>
       <ul>
-        {addFileData.map((item, index) => {
+        {setFileData.map((item, index) => {
           return (
             <li
               style={{
-                backgroundColor: item === currentName ? "#00b7fa" : "white",
+                backgroundColor:
+                  item.fileName === currentName ? "#00b7fa" : "white",
               }}
               className={sideStyle.li}
               key={index}
               onClick={(e) => {
-                setFileName(item.FileName);
+                setFileName(item.fileName);
               }}
               onMouseEnter={handleMouse(true)}
               onMouseLeave={handleMouse(false)}
             >
-              <span>{item.FileName}</span>
+              <span>{item.fileName}</span>
               <button
                 className={sideStyle.btnDanger}
                 style={{ display: mouse ? "block" : "none" }}
                 onClick={() => {
-                  handleDelete(item.FileName);
+                  handleDelete(item.fileName);
                 }}
               >
                 删除

@@ -1,32 +1,45 @@
 import * as actionTypes from "./constants";
-// 新增文件名
-const addLabelName = (res) => ({
-  type: actionTypes.FILENAME,
-  addFileName: res,
-});
 
-export const FileNameListAsync = (data) => {
-  return (dispatch) => {
-    // localStorage.setItem("fileName", JSON.stringify(data));
-    dispatch(addLabelName(data));
+const setLabelFile = (res) => ({
+  type: actionTypes.LABELFILE,
+  setFileList: res,
+});
+// 新增文件
+export const addFileListAsync = (name) => {
+  return (dispatch, getState) => {
+    const getFileData = getState().components.setFileData;
+    getFileData.push({ id: "001", fileCode: "", fileName: name });
+
+    dispatch(setLabelFile(getFileData));
   };
 };
+// 删除文件
+export const delFileListAsync = (name) => {
+  return (dispatch, getState) => {
+    const getFileData = getState().components.setFileData;
+    const filterFileData = getFileData.filter((items) => {
+      return items.fileName !== name;
+    });
 
-// 新增代码
-export const addFileCodeAsync = (res) => ({
-  type: actionTypes.FILECODE,
-  addFileCode: res,
-});
-// 新增数据
-const addDataObject = (res) => ({
-  type: actionTypes.GETDATA,
-  addFileData: res,
+    dispatch(setLabelFile(filterFileData));
+  };
+};
+// 更改文件数据
+const setDataObject = (res) => ({
+  type: actionTypes.SETDATAOBJECT,
+  setFileData: res,
 });
 export const changeDataObjectAsync = (code, currentName) => {
-  return (dispatch) => {
-    // localStorage.setItem("data", JSON.stringify(data));
-    // dispatch(addDataObject(data));
-    dispatch(addDataObject({ code, currentName }));
+  return (dispatch, getState) => {
+    const getFileData = getState().components.setFileData;
+    const changeFileData = getFileData.map((item) => {
+      if (currentName === item.fileName) {
+        item.fileCode = code;
+      }
+      return item;
+    });
+
+    dispatch(setDataObject(changeFileData));
   };
 };
 // 获取当前文件名

@@ -12,25 +12,25 @@ export default function Contents() {
   const dispatch = useDispatch();
 
   // 从redux的store对象中提取数据(state)。
-  const { addFileData, currentName } = useSelector(
+  const { setFileData, currentName } = useSelector(
     (state) => ({
-      addFileData: state.components.addFileData,
+      setFileData: state.components.setFileData,
       currentName: state.components.currentName,
     }),
     shallowEqual
   );
 
   const [code, setCode] = useState(
-    addFileData.length === 0
+    setFileData.length === 0
       ? ""
-      : addFileData.find((file) => file.FileName === currentName)?.FileCode
+      : setFileData.find((file) => file.fileName === currentName)?.fileCode
   );
-  // 问题1：要不要加addFileData
+
   useEffect(() => {
     setCode(
-      addFileData.length === 0
+      setFileData.length === 0
         ? ""
-        : addFileData.find((file) => file.FileName === currentName)?.FileCode
+        : setFileData.find((file) => file.fileName === currentName)?.fileCode
     );
   }, [currentName]);
 
