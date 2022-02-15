@@ -18,7 +18,7 @@ export const addFileCodeAsync = (res) => ({
   addFileCode: res,
 });
 // 新增数据
-export const addDataObject = (res) => ({
+const addDataObject = (res) => ({
   type: actionTypes.GETDATA,
   addFileData: res,
 });

@@ -12,9 +12,8 @@ export default function Contents() {
   const dispatch = useDispatch();
 
   // 从redux的store对象中提取数据(state)。
-  const { addFileCode, addFileData, currentName } = useSelector(
+  const { addFileData, currentName } = useSelector(
     (state) => ({
-      addFileCode: state.components.addFileCode,
       addFileData: state.components.addFileData,
       currentName: state.components.currentName,
     }),
@@ -24,36 +23,19 @@ export default function Contents() {
   const [code, setCode] = useState(
     addFileData.length === 0
       ? ""
-      : addFileData.find((file) => file.FileName === currentName).FileCode
+      : addFileData.find((file) => file.FileName === currentName)?.FileCode
   );
-
+  // 问题1：要不要加addFileData
   useEffect(() => {
     setCode(
       addFileData.length === 0
         ? ""
-        : addFileData.find((file) => file.FileName === currentName).FileCode
+        : addFileData.find((file) => file.FileName === currentName)?.FileCode
     );
   }, [currentName]);
 
   // 保存
   const saveData = () => {
-    // 对象要转化成字符串
-    // const file = addFileData.find((file) => file.FileName === currentName);
-    // if (file) {
-    //   // update
-    //   file.FileName = currentName;
-    //   file.FileCode = addFileCode;
-    // } else {
-    //   // add
-    //   const data = {
-    //     id: "001",
-    //     FileName: currentName,
-    //     FileCode: addFileCode,
-    //   };
-    //   addFileData.push(data);
-    // }
-    // dispatch(changeDataObjectAsync([...addFileData]));
-    console.log("save data-----");
     dispatch(changeDataObjectAsync(code, currentName));
   };
   return (

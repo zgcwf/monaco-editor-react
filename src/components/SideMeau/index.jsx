@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form } from "antd";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
@@ -26,11 +26,7 @@ export default function SlidingTabs() {
   const [mouse, setMouse] = useState(false);
   // 增加表单的form
   const [form] = Form.useForm();
-  // useEffect(() => {
-  //   dispatch(
-  //     FileNameListAsync(JSON.parse(localStorage.getItem("fileName")) || [])
-  //   );
-  // }, [dispatch]);
+
   // 显示表单
   const onVisible = () => {
     setVisible(true);
